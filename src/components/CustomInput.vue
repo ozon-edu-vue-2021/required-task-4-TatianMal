@@ -1,7 +1,14 @@
 <template>
   <div class="custom-input">
     <label :for="name">{{ label }}</label>
-    <input type="text" :name="name" :value="value" @input="setValue" />
+    <input
+      type="text"
+      :name="name"
+      :value="value"
+      @input="setValue"
+      @focus="$emit('focus', $event)"
+      @blur="$emit('blur', $event)"
+    />
   </div>
 </template>
 
