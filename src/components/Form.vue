@@ -1,8 +1,8 @@
 <template>
-  <div class="form">
-    <div>
-      <span>Личные данные</span>
-      <div>
+  <form class="form" @submit.prevent="saveData">
+    <div class="form-section">
+      <div class="sub-header">Личные данные</div>
+      <div class="row">
         <custom-input
           v-model="formData.lastName"
           label="Фамилия"
@@ -30,23 +30,25 @@
         name="email"
       ></custom-input>
     </div>
-    <div>
-      <span>Пол</span>
-      <custom-radiobutton
-        v-model="formData.gender"
-        value="male"
-        label="Мужской"
-        name="male"
-      ></custom-radiobutton>
-      <custom-radiobutton
-        v-model="formData.gender"
-        value="female"
-        label="Женский"
-        name="female"
-      ></custom-radiobutton>
+    <div class="form-section">
+      <div class="sub-header">Пол</div>
+      <div class="radio-group">
+        <custom-radiobutton
+          v-model="formData.gender"
+          value="male"
+          label="Мужской"
+          name="male"
+        ></custom-radiobutton>
+        <custom-radiobutton
+          v-model="formData.gender"
+          value="female"
+          label="Женский"
+          name="female"
+        ></custom-radiobutton>
+      </div>
     </div>
-    <div>
-      <span>Паспортные данные</span>
+    <div class="form-section">
+      <div class="sub-header">Паспортные данные</div>
       <custom-dropdown
         v-model="formData.citizenship"
         label="Гражданство"
@@ -55,7 +57,7 @@
         textField="nationality"
         :items="citizenships"
       ></custom-dropdown>
-      <div v-if="!isCitizenshipForeign">
+      <div v-if="!isCitizenshipForeign" class="row">
         <custom-input
           v-model="formData.passportSeries"
           label="Серия паспорта"
@@ -92,29 +94,35 @@
           v-model="formData.foreignPassportCountry"
           label="Страна выдачи"
           name="foreignPassportCountry"
+          valueField="id"
+          textField="nationality"
           :items="citizenships"
         ></custom-dropdown>
         <custom-dropdown
           v-model="formData.foreignPassportType"
-          label="Страна выдачи"
+          label="Тип паспорта"
           name="foreignPassportType"
+          valueField="id"
+          textField="type"
           :items="passportTypes"
         ></custom-dropdown>
       </div>
       <div>
         <span>Меняли ли вы фамилию?</span>
-        <custom-radiobutton
-          v-model="formData.isChangeName"
-          :value="true"
-          label="Да"
-          name="yes"
-        ></custom-radiobutton>
-        <custom-radiobutton
-          v-model="formData.isChangeName"
-          :value="false"
-          label="Нет"
-          name="no"
-        ></custom-radiobutton>
+        <div class="radio-group">
+          <custom-radiobutton
+            v-model="formData.isChangeName"
+            :value="true"
+            label="Да"
+            name="yes"
+          ></custom-radiobutton>
+          <custom-radiobutton
+            v-model="formData.isChangeName"
+            :value="false"
+            label="Нет"
+            name="no"
+          ></custom-radiobutton>
+        </div>
         <div v-if="formData.isChangeName">
           <custom-input
             v-model="formData.previousLastName"
@@ -129,7 +137,8 @@
         </div>
       </div>
     </div>
-  </div>
+    <button class="btn-submit">Отправить</button>
+  </form>
 </template>
 
 <script>
@@ -176,7 +185,11 @@ export default {
       return this.formData.citizenship?.nationality !== "Russia";
     },
   },
-  methods: {},
+  methods: {
+    saveData() {
+      console.log(this.formData);
+    },
+  },
 };
 </script>
 
@@ -185,5 +198,24 @@ export default {
   display: flex;
   flex-direction: column;
   padding: 1em;
+}
+.form-section {
+  padding-bottom: 0.75em;
+}
+.sub-header {
+  font-size: 1.5em;
+}
+.radio-group {
+  display: flex;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+.btn-submit {
+  background-color: rgb(46, 46, 228);
+  color: white;
+  padding: 20px;
+  align-self: flex-end;
 }
 </style>
