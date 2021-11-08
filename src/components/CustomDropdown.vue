@@ -1,12 +1,12 @@
 <template>
-  <div v-click-outside="closeDropdown">
+  <div v-click-outside="closeDropdown" class="dropdown-wrapper">
     <custom-input
       :value="inputValue"
       :label="label"
       :name="name"
       @focus="openDropdown"
     ></custom-input>
-    <div v-if="isDropdownOpen">
+    <div v-if="isDropdownOpen" class="dropdown-menu">
       <ul v-if="items.length">
         <li
           v-for="item in items"
@@ -85,4 +85,23 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.dropdown-wrapper {
+  position: relative;
+  max-height: 200px;
+  box-shadow: 10px 10px 0 0 rgba(black, 0.03);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  min-width: 100px;
+  min-height: 10px;
+  overflow-y: auto;
+  box-shadow: 10px 10px 0 0 rgba(black, 0.03);
+  background: white;
+  animation: menu 0.3s ease forwards;
+  z-index: 1000;
+}
+</style>

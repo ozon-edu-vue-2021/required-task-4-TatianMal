@@ -217,5 +217,6 @@ export default {
   color: white;
   padding: 20px;
   align-self: flex-end;
+  border-radius: 8px;
 }
 </style>
