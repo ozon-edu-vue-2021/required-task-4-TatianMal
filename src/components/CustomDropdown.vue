@@ -6,11 +6,12 @@
       :name="name"
       @focus="openDropdown"
     ></custom-input>
-    <div v-if="isDropdownOpen" class="dropdown-menu">
-      <ul v-if="items.length">
+    <div v-if="isDropdownOpen" class="dropdown-content-wrapper">
+      <ul v-if="items.length" class="dropdown-menu">
         <li
           v-for="item in items"
           :key="item[valueField]"
+          :class="['dropdown-menu-item', { selected: checkIsSelected(item) }]"
           @click="setValue(item)"
         >
           {{ item[textField] }}
@@ -80,6 +81,13 @@ export default {
     },
     setValue(item) {
       this.$emit("input", item);
+      this.closeDropdown();
+    },
+    checkIsSelected(item) {
+      if (!this.value) {
+        return false;
+      }
+      return this.value[this.valueField] === item[this.valueField];
     },
   },
 };
@@ -88,20 +96,39 @@ export default {
 <style scoped>
 .dropdown-wrapper {
   position: relative;
-  max-height: 200px;
-  box-shadow: 10px 10px 0 0 rgba(black, 0.03);
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-.dropdown-menu {
+
+.dropdown-content-wrapper {
   position: absolute;
-  top: 100%;
+  top: 0;
+  display: block;
+  background: #fff;
   width: 100%;
-  min-width: 100px;
-  min-height: 10px;
-  overflow-y: auto;
-  box-shadow: 10px 10px 0 0 rgba(black, 0.03);
-  background: white;
-  animation: menu 0.3s ease forwards;
+  max-height: 240px;
+  overflow: auto;
+  border: 1px solid #e8e8e8;
   z-index: 1000;
+}
+
+.dropdown-menu {
+  list-style: none;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  min-width: 100%;
+}
+
+.dropdown-menu-item {
+  cursor: pointer;
+  padding: 5px;
+}
+
+.dropdown-menu-item:hover {
+  background-color: rgb(168, 192, 236);
+}
+
+.selected {
+  background-color: rgb(71, 71, 212);
+  color: #fff;
 }
 </style>
