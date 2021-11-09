@@ -57,7 +57,7 @@
         textField="nationality"
         :items="citizenships"
       ></custom-dropdown>
-      <div v-if="!isCitizenshipForeign" class="row">
+      <div v-if="hasCitizenship && !isCitizenshipForeign" class="row">
         <custom-input
           v-model="formData.passportSeries"
           label="Серия паспорта"
@@ -74,7 +74,7 @@
           name="passportDate"
         ></custom-input>
       </div>
-      <div v-else>
+      <div v-else-if="hasCitizenship">
         <custom-input
           v-model="formData.foreignLastName"
           label="Фамилия на латинице"
@@ -167,6 +167,7 @@ export default {
         citizenship: null,
         passportSeries: "",
         passportNumber: "",
+        passportDate: "",
         foreignLastName: "",
         foreignFirstName: "",
         foreignPassportNumber: "",
@@ -181,13 +182,43 @@ export default {
     };
   },
   computed: {
+    hasCitizenship() {
+      return !!this.formData.citizenship?.nationality;
+    },
     isCitizenshipForeign() {
       return this.formData.citizenship?.nationality !== "Russia";
+    },
+  },
+  watch: {
+    isCitizenshipForeign(value) {
+      if (!value) {
+        this.cleanForeignPassportFields();
+        return;
+      }
+      this.cleanRussianPassportFields();
+    },
+    "formData.isChangeName"(value) {
+      if (!value) {
+        this.formData.previousLastName = "";
+        this.formData.previousFirstName = "";
+      }
     },
   },
   methods: {
     saveData() {
       console.log(this.formData);
+    },
+    cleanForeignPassportFields() {
+      this.formData.foreignLastName = "";
+      this.formData.foreignFirstName = "";
+      this.formData.foreignPassportNumber = "";
+      this.formData.foreignPassportCountry = null;
+      this.formData.foreignPassportType = null;
+    },
+    cleanRussianPassportFields() {
+      this.formData.passportSeries = "";
+      this.formData.passportNumber = "";
+      this.formData.passportDate = "";
     },
   },
 };
