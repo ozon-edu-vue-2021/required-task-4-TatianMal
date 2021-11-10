@@ -23,6 +23,7 @@
         v-model="formData.birthDay"
         label="Дата рождения"
         name="birthDay"
+        :placeholder="datePlaceholder"
       ></custom-input>
       <custom-input
         v-model="formData.email"
@@ -72,6 +73,7 @@
           v-model="formData.passportDate"
           label="Дата выдачи"
           name="passportDate"
+          :placeholder="datePlaceholder"
         ></custom-input>
       </div>
       <div v-else-if="hasCitizenship">
@@ -179,6 +181,7 @@ export default {
       },
       citizenships,
       passportTypes,
+      datePlaceholder: "дд.мм.гггг",
     };
   },
   computed: {

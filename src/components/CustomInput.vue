@@ -4,6 +4,7 @@
     <input
       type="text"
       :name="name"
+      :placeholder="placeholder"
       :value="value"
       @input="setValue"
       @focus="$emit('focus', $event)"
@@ -25,6 +26,10 @@ export default {
       default: "",
     },
     name: {
+      type: String,
+      default: "",
+    },
+    placeholder: {
       type: String,
       default: "",
     },
